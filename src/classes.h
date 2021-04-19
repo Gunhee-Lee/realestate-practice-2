@@ -10,7 +10,7 @@ class IPrintable
 
 class State: public virtual IPrintable
 {
-    DateTime today;     // Use QuantLib
+    DateTime today_;     // [TODO] Use QuantLib
     std::vector<Asset> currentAssets_;  // Assets include cash and debts.
 };
 
@@ -30,6 +30,16 @@ class WaitAction: public Action
 
 };
 
+class BuyAssetAction: public Action
+{
+
+};
+
+class SellAssetAction: public Action
+{
+
+};
+
 class Environment
 {
 };
@@ -37,14 +47,41 @@ class Environment
 // This class will be implemented as a json file.
 class Asset: public virtual IPrintable
 {
-    std::u16string name;
+    std::u16string name_;
     Currency getPrice(Time t);  // QuantLib should replace this line soon.
+
+    public:
+    virtual void print();
 };
 
+class CashAsset: public Asset
+{
+    std::u16string name_;       // KRW, USD, JPY, ......
+    std::double amount_;        // [TODO] Use QuantLib to have a financial standard of digit resolution. (double is not enough)
+
+    public:
+    virtual void print();
+};
+
+class HouseAsset: public Asset
+{
+
+};
+
+class CarAsset: public Asset
+{
+    // I don't think a car is an asset, but to demonstrate the depreciating value
+    // simulation capabilities, it is required to include this.
+};
+
+// Multi-people simulation will be developed later.
 class Person: public virtual IPrintable
 {
     State currentState_;
+    std::u16string name_;
 
+    public:
+    virtual void print();
 };
 
 // Control class.
